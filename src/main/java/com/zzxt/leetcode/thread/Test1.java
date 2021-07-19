@@ -1,10 +1,10 @@
 package com.zzxt.leetcode.thread;
 
-public class Test {
+public class Test1 {
   private long count = 0;
   private void add10K() {
     int idx = 0;
-    while(idx++ < 10000) {
+    while(idx++ < 100000) {
       count += 1;
     }
   }
@@ -27,7 +27,7 @@ public class Test {
   }
 
   public static void main(String[] args) throws InterruptedException {
-    Test test = new Test();
+    Test1 test = new Test1();
 
     System.out.println(test.calc());
   }
