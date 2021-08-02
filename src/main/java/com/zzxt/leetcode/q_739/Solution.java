@@ -1,69 +1,34 @@
 package com.zzxt.leetcode.q_739;
 
+import javafx.util.Pair;
+
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 
 class Solution {
-    class Temp{
-        int value;
-        int index;
-
-        public Temp(int value, int index) {
-            this.value = value;
-            this.index = index;
-        }
-    }
-
 
     public int[] dailyTemperatures(int[] temperatures) {
-        Deque<Temp> stack = new LinkedList<>();
-
-        if (temperatures.length == 1) {
-            return new int[] {0};
-        }
-
         int[] result = new int[temperatures.length];
-        for (int i = temperatures.length - 1; i >= 0; i--) {
-            if (stack.isEmpty()) {
-                result[i] = 0;
-                stack.push(new Temp(temperatures[i], i));
-                continue;
-            }
 
-            if ( temperatures[i] < stack.peek().value) {
-                result[i] = stack.peek().index - i;
-                stack.push(new Temp(temperatures[i], i));
-            } else {
+        Deque<Pair<Integer, Integer>> stack = new LinkedList<>();
 
-                while (true) {
+        for (int i = 0; i < temperatures.length; i++) {
+            if (!stack.isEmpty()) {
 
-                    if (stack.isEmpty() ) {
-                        stack.push(new Temp(temperatures[i], i));
-                        result[i] = 0;
-                        break;
-                    }
-
-                    if (temperatures[i] >= stack.peek().value) {
-                        stack.pop();
-                        continue;
-                    }
-
-
-                    if (stack.peek().value > temperatures[i]) {
-                        result[i] = stack.peek().index - i;
-                        stack.push(new Temp(temperatures[i], i));
-                        break;
-                    }
+                while (!stack.isEmpty() && stack.peek().getKey() < temperatures[i]) {
+                    result[stack.peek().getValue()] = i - stack.peek().getValue();
+                    stack.pop();
                 }
 
-
             }
+            stack.push(new Pair<>(temperatures[i], i));
         }
 
         return result;
     }
 
     public static void main(String[] args) {
-        new Solution().dailyTemperatures(new int[]{73,74,75,71,69,72,76,73});
+        System.out.println(Arrays.toString(new Solution().dailyTemperatures(new int[]{73, 74, 75, 71, 69, 72, 76, 73})));
     }
 }
